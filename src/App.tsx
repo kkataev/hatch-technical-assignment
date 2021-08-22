@@ -1,45 +1,45 @@
-import React, { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { useState, useCallback } from 'react';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Header from './components/Header';
+import SearchInput from './components/SearchInput';
+import ViewModes from './components/ViewModes';
+import DataList from './components/DataList';
+import { ViewMode, City } from './types';
+import searchCities from './data';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.List);
+  const [list, setList] = useState<City[]>(searchCities());
+  const onSearch = useCallback((term: string) => {
+    setList(searchCities(term));
+  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
-}
+    <Container>
+      <Box paddingBottom={3}>
+        <Header />
+        <Grid
+          alignItems="flex-end"
+          container
+          direction="row"
+          spacing={2}
+        >
+          <Grid xs={12} sm item>
+            <SearchInput onSearch={onSearch} />
+          </Grid>
+          <Grid xs={12} sm="auto" item>
+            <ViewModes mode={viewMode} onChange={setViewMode} />
+          </Grid>
+        </Grid>
+      </Box>
+      <DataList
+        data={list}
+        viewMode={viewMode}
+      />
+    </Container>
+  );
+};
 
-export default App
+export default App;
