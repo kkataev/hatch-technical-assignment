@@ -1,11 +1,15 @@
+const OFF = 'off';
+
 module.exports = {
   env: {
     browser: true,
     es2021: true,
   },
   extends: [
-    'plugin:react/recommended',
     'airbnb',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -17,8 +21,14 @@ module.exports = {
   },
   plugins: [
     'react',
-    '@typescript-eslint',
   ],
   rules: {
+    'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+    'import/no-unresolved': [OFF, { caseSensitive: false }],
+    'import/extensions': OFF,
+    'no-use-before-define': OFF,
+    '@typescript-eslint/no-use-before-define': ['error'],
+    'no-shadow': OFF,
+    'react/prop-types': OFF,
   },
 };
