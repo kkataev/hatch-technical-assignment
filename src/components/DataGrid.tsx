@@ -8,6 +8,7 @@ import Masonry, { createCellPositioner, MasonryCellProps } from 'react-virtualiz
 import CellMeasurer, { CellMeasurerCache } from 'react-virtualized/dist/commonjs/CellMeasurer';
 import GridItem from './GridItem';
 import { City } from '../types';
+import NothingFound from './NothingFound';
 
 interface DataGridProps {
   data: City[],
@@ -72,6 +73,14 @@ const DataGrid: React.FC<DataGridProps> = ({
     });
     masonryRef.current?.clearCellPositions();
   }, [data, data.length, columnCount]);
+
+  if (!data.length) {
+    return (
+      <div style={{ minWidth: columnWidth }}>
+        <NothingFound />
+      </div>
+    );
+  }
 
   return (
     <Masonry

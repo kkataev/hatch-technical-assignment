@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Table, { Column } from 'react-virtualized/dist/es/Table';
 import { City } from '../types';
 import TableRow from './TableRow';
+import NothingFound from './NothingFound';
 
 interface DataTableProps {
   data: City[];
@@ -19,6 +20,7 @@ const DataTable: React.FC<DataTableProps> = ({
   scrollTop,
 }) => {
   const rowGetter = useCallback((index) => data[index], [data]);
+
   const headerRenderer = useCallback(({ label }) => (
     <Box>
       <Typography variant="h6">
@@ -26,6 +28,7 @@ const DataTable: React.FC<DataTableProps> = ({
       </Typography>
     </Box>
   ), []);
+
   const rowRenderer = useCallback(({ key, style, index }) => (
     <TableRow
       key={key}
@@ -37,11 +40,14 @@ const DataTable: React.FC<DataTableProps> = ({
   ), [data]);
   const cellDataGetter = useCallback(({ rowData }) => rowData, []);
 
+  const noRowRenderer = useCallback(() => <NothingFound />, []);
+
   return (
     <Table
       autoHeight
       headerHeight={50}
       height={height}
+      noRowsRenderer={noRowRenderer}
       rowHeight={51}
       rowCount={data.length}
       rowRenderer={rowRenderer}
